@@ -1,0 +1,65 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+
+    "lib": ["ES2023"],
+
+    "rootDir": ".",
+
+    "baseUrl": ".",
+
+    "paths": {
+      "@common/*": ["common/*"],
+      "@config/*": ["config/*"],
+      "@core/*": ["core/*"],
+      "@pages/*": ["pageobjects/*"],
+      "@tests/*": ["tests/*"],
+      "@utils/*": ["common/utils/*"],
+      "@logger/*": ["common/logger/*"],
+      "@ai/*": ["ai/*"]
+    },
+
+    "resolveJsonModule": true,
+
+    "esModuleInterop": true,
+
+    "allowSyntheticDefaultImports": true,
+
+    "forceConsistentCasingInFileNames": true,
+
+    "strict": true,
+
+    "noImplicitAny": true,
+
+    "strictNullChecks": true,
+
+    "noUncheckedIndexedAccess": true,
+
+    "exactOptionalPropertyTypes": true,
+
+    "skipLibCheck": true,
+
+    "sourceMap": true,
+
+    "declaration": false,
+
+    "removeComments": false,
+
+    "types": [
+      "node"
+    ]
+  },
+
+  "include": [
+    "**/*.ts"
+  ],
+
+  "exclude": [
+    "node_modules",
+    "reports",
+    "artifacts",
+    "dist"
+  ]
+}
