@@ -3,7 +3,7 @@ Before,
 After
 } from "@cucumber/cucumber";
 
-import { BaseTest } from "../base/base.test";
+import { BaseTest } from "../base/BaseTest";
 
 
 Before(async()=>{

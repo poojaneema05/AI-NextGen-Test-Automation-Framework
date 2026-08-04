@@ -1,7 +1,7 @@
 export interface EnvironmentConfig {
     baseUrl: string;
     apiUrl: string;
-    browser: string;
+    browser: "chromium" | "firefox" | "webkit";
     headless: boolean;
 }
 

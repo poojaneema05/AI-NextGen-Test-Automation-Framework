@@ -1,11 +1,11 @@
-import { BrowserFactory } from "../browser/browser.factory";
-import { DriverManager } from "../driver/driver.manager";
+import { BrowserFactory } from "@core/browser/BrowserFactory";
+import { DriverManager } from "@core/driver/DriverManager";
 
 
 export class BaseTest{
 
 
-static async setup(){
+static async setup(): Promise<void>{
 
     const browser =
         await BrowserFactory.createBrowser();
