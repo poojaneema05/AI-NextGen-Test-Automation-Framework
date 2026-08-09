@@ -18,7 +18,8 @@
       "@tests/*": ["tests/*"],
       "@utils/*": ["src/common/utils/*"],
       "@logger/*": ["src/common/logger/*"],
-      "@ai/*": ["src/ai/*"]
+      "@ai/*": ["src/ai/*"],
+      "@fixtures/*": ["src/fixtures/*"]
     },
 
     "resolveJsonModule": true,
