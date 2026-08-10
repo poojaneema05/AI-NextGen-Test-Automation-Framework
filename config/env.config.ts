@@ -9,14 +9,14 @@ export interface EnvironmentConfig {
 export const environments: Record<string, EnvironmentConfig> = {
 
     qa: {
-        baseUrl: "https://qa.example.com",
+        baseUrl: "https://practicetestautomation.com",
         apiUrl: "https://qa-api.example.com",
         browser: "chromium",
         headless: true
     },
 
     stage: {
-        baseUrl: "https://stage.example.com",
+        baseUrl: "https://practicetestautomation.com",
         apiUrl: "https://stage-api.example.com",
         browser: "chromium",
         headless: true

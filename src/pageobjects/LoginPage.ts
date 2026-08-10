@@ -17,9 +17,10 @@ export class LoginPage extends BasePage {
     }
 
     async open(): Promise<void> {
-        await this.navigate(
-            "https://practicetestautomation.com/practice-test-login/"
-        );
+
+    await this.navigate(
+        "/practice-test-login/"
+    );
     }
 
     async login(username: string, password: string): Promise<void> {
