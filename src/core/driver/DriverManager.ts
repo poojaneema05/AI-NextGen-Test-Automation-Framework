@@ -1,8 +1,20 @@
 import { Browser, BrowserContext, Page } from "@playwright/test";
-
 import { FrameworkContext } from "@core/context/FrameworkContext";
 import { BrowserFactory } from "@core/browser/BrowserFactory";
+import { Logger } from "@logger/Logger";
 
+/**
+ * Manages the Playwright browser lifecycle for the framework.
+ *
+ * Responsibilities:
+ * - Initializes and stores the browser instance.
+ * - Creates browser contexts and pages.
+ * - Provides access to the current browser resources.
+ * - Closes browser resources after test execution.
+ *
+ * DriverManager delegates the actual browser creation to BrowserFactory
+ * and stores runtime objects through FrameworkContext.
+ */
 export class DriverManager {
 
     /**
@@ -10,9 +22,13 @@ export class DriverManager {
      */
     static async initialize(): Promise<void> {
 
+        Logger.info("Initializing browser through BrowserFactory");
+
         const browser = await BrowserFactory.createBrowser();
 
         FrameworkContext.setBrowser(browser);
+
+        Logger.debug("Browser instance stored in FrameworkContext");
     }
 
     /**
@@ -37,6 +53,8 @@ export class DriverManager {
         const page = await context.newPage();
 
         FrameworkContext.setPage(page);
+
+        Logger.debug("Created new browser context and page");
 
         return page;
     }
@@ -70,10 +88,14 @@ export class DriverManager {
      */
     static async close(): Promise<void> {
 
+        Logger.debug("Closing browser context and browser");
+
         const context = FrameworkContext.getContext();
         const browser = FrameworkContext.getBrowser();
 
         await context.close();
         await browser.close();
+
+        Logger.debug("Browser context and browser closed successfully");
     }
 }

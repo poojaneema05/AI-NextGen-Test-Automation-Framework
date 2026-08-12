@@ -6,24 +6,38 @@ import {
 } from "@playwright/test";
 
 import { ConfigManager } from "@config/config.manager";
+import { Logger } from "@logger/Logger";
 
-
+/**
+ * Creates Playwright browser instances based on the active environment configuration.
+ *
+ * BrowserFactory is responsible only for browser creation.
+ * Browser lifecycle management is handled by DriverManager.
+ */
 export class BrowserFactory {
 
     static async createBrowser(): Promise<Browser> {
 
         const config = ConfigManager.getEnvironment();
+        // Browser type and headless mode are controlled by the active environment configuration.
+        Logger.info(
+            `Creating ${config.browser} browser (headless: ${config.headless})`
+        );
 
         switch (config.browser) {
 
             case "firefox":
 
+                Logger.debug("Launching Firefox browser");
+                
                 return await firefox.launch({
                     headless: config.headless
                 });
 
 
             case "webkit":
+
+                Logger.debug("Launching WebKit browser");
 
                 return await webkit.launch({
                     headless: config.headless
@@ -32,6 +46,8 @@ export class BrowserFactory {
 
             case "chromium":
             default:
+
+                Logger.debug("Launching Chromium browser");
 
                 return await chromium.launch({
                     headless: config.headless
