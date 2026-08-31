@@ -8,6 +8,8 @@ import { LoginPage } from "@pages/LoginPage";
 
 type FrameworkFixtures = {
 
+    driverManager: DriverManager;
+
     homePage: HomePage;
 
     loginPage: LoginPage;
@@ -15,46 +17,59 @@ type FrameworkFixtures = {
 };
 
 
-export const test = base.extend<FrameworkFixtures>({
+export const test =
+    base.extend<FrameworkFixtures>({
 
-    homePage: async ({}, use) => {
+        driverManager: async ({}, use) => {
 
-        await DriverManager.initialize();
-
-        await DriverManager.createPage();
-
-        const page =
-            DriverManager.getPage();
-
-        const homePage =
-            new HomePage(page);
-
-        await use(homePage);
-
-        await DriverManager.close();
-
-    },
+            const driverManager =
+                new DriverManager();
 
 
-    loginPage: async ({}, use) => {
+            await driverManager.initialize();
 
-        await DriverManager.initialize();
+            await driverManager.createPage();
 
-        await DriverManager.createPage();
 
-        const page =
-            DriverManager.getPage();
+            try {
 
-        const loginPage =
-            new LoginPage(page);
+                await use(driverManager);
 
-        await use(loginPage);
+            } finally {
 
-        await DriverManager.close();
+                await driverManager.close();
+            }
+        },
 
-    }
 
-});
+        homePage: async ({ driverManager }, use) => {
+
+            const page =
+                driverManager.getPage();
+
+
+            const homePage =
+                new HomePage(page);
+
+
+            await use(homePage);
+        },
+
+
+        loginPage: async ({ driverManager }, use) => {
+
+            const page =
+                driverManager.getPage();
+
+
+            const loginPage =
+                new LoginPage(page);
+
+
+            await use(loginPage);
+        }
+
+    });
 
 
 export { expect } from "@playwright/test";

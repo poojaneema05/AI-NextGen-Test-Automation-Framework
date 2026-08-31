@@ -1,150 +1,204 @@
-import { Browser, BrowserContext, Page } from "@playwright/test";
+import {
+    Browser,
+    BrowserContext,
+    Page
+} from "@playwright/test";
+
 import { FrameworkContext } from "@core/context/FrameworkContext";
+
 import { BrowserFactory } from "@core/browser/BrowserFactory";
+
 import { Logger } from "@logger/Logger";
+
 import { FrameworkError } from "@common/errors/FrameworkError";
 
+
 /**
- * Manages the Playwright browser lifecycle for the framework.
+ * Manages the Playwright browser lifecycle for a test.
  *
  * Responsibilities:
- * - Initializes and stores the browser instance.
+ * - Initializes the browser.
  * - Creates browser contexts and pages.
- * - Provides access to the current browser resources.
+ * - Provides access to browser resources.
  * - Closes browser resources after test execution.
  *
- * DriverManager delegates the actual browser creation to BrowserFactory
- * and stores runtime objects through FrameworkContext.
+ * Each DriverManager instance owns its own FrameworkContext,
+ * providing isolation between test executions.
  */
 export class DriverManager {
 
-    /**
- * Initializes the browser through BrowserFactory and stores it
- * in FrameworkContext for use by the current test.
- */
-static async initialize(): Promise<void> {
+    private readonly frameworkContext:
+        FrameworkContext;
 
-    Logger.info("Initializing browser through BrowserFactory");
 
-    try {
+    constructor() {
 
-        const browser = await BrowserFactory.createBrowser();
-
-        FrameworkContext.setBrowser(browser);
-
-        Logger.debug("Browser instance stored in FrameworkContext");
-
-    } catch (error) {
-
-        Logger.error("Failed to initialize browser");
-
-        throw new FrameworkError(
-            "Failed to initialize browser.",
-            { cause: error }
-        );
+        this.frameworkContext =
+            new FrameworkContext();
     }
-}
+
 
     /**
-     * Sets the browser instance.
+     * Initializes the browser through BrowserFactory.
      */
-    static setBrowser(browser: Browser): void {
+    async initialize(): Promise<void> {
 
-        FrameworkContext.setBrowser(browser);
-    }
-
-    /**
- * Creates a new browser context and page.
- *
- * A separate context is created for each test fixture to keep
- * browser state isolated between tests.
- */
-static async createPage(): Promise<Page> {
-
-    try {
-
-        const browser = FrameworkContext.getBrowser();
-
-        const context = await browser.newContext();
-
-        FrameworkContext.setContext(context);
-
-        const page = await context.newPage();
-
-        FrameworkContext.setPage(page);
-
-        Logger.debug("Created new browser context and page");
-
-        return page;
-
-    } catch (error) {
-
-        Logger.error(
-            "Failed to create browser context or page"
+        Logger.info(
+            "Initializing browser through BrowserFactory"
         );
 
-        throw new FrameworkError(
-            "Failed to create browser context or page.",
-            { cause: error }
-        );
+
+        try {
+
+            const browser =
+                await BrowserFactory.createBrowser();
+
+
+            this.frameworkContext.setBrowser(
+                browser
+            );
+
+
+            Logger.debug(
+                "Browser instance stored in FrameworkContext"
+            );
+
+        } catch (error) {
+
+            Logger.error(
+                "Failed to initialize browser"
+            );
+
+
+            throw new FrameworkError(
+                "Failed to initialize browser.",
+                { cause: error }
+            );
+        }
     }
-}
+
 
     /**
-     * Returns the current browser instance.
+     * Creates a browser context and page.
      */
-    static getBrowser(): Browser {
+    async createPage(): Promise<Page> {
 
-        return FrameworkContext.getBrowser();
+        try {
+
+            const browser =
+                this.frameworkContext.getBrowser();
+
+
+            const context =
+                await browser.newContext();
+
+
+            this.frameworkContext.setContext(
+                context
+            );
+
+
+            const page =
+                await context.newPage();
+
+
+            this.frameworkContext.setPage(
+                page
+            );
+
+
+            Logger.debug(
+                "Created new browser context and page"
+            );
+
+
+            return page;
+
+        } catch (error) {
+
+            Logger.error(
+                "Failed to create browser context or page"
+            );
+
+
+            throw new FrameworkError(
+                "Failed to create browser context or page.",
+                { cause: error }
+            );
+        }
     }
+
+
+    /**
+     * Returns the current browser.
+     */
+    getBrowser(): Browser {
+
+        return this.frameworkContext.getBrowser();
+    }
+
 
     /**
      * Returns the current browser context.
      */
-    static getContext(): BrowserContext {
+    getContext(): BrowserContext {
 
-        return FrameworkContext.getContext();
+        return this.frameworkContext.getContext();
     }
+
 
     /**
      * Returns the current page.
      */
-    static getPage(): Page {
+    getPage(): Page {
 
-        return FrameworkContext.getPage();
+        return this.frameworkContext.getPage();
     }
+
 
     /**
- * Closes the browser context and browser.
- *
- * This releases Playwright resources after test execution.
- */
-static async close(): Promise<void> {
-
-    Logger.debug("Closing browser context and browser");
-
-    try {
-
-        const context = FrameworkContext.getContext();
-        const browser = FrameworkContext.getBrowser();
-
-        await context.close();
-        await browser.close();
+     * Closes browser resources and clears framework state.
+     */
+    async close(): Promise<void> {
 
         Logger.debug(
-            "Browser context and browser closed successfully"
+            "Closing browser context and browser"
         );
 
-    } catch (error) {
 
-        Logger.error(
-            "Failed to close browser context or browser"
-        );
+        try {
 
-        throw new FrameworkError(
-            "Failed to close browser context or browser.",
-            { cause: error }
-        );
+            const context =
+                this.frameworkContext.getContext();
+
+
+            const browser =
+                this.frameworkContext.getBrowser();
+
+
+            await context.close();
+
+            await browser.close();
+
+
+            this.frameworkContext.clear();
+
+
+            Logger.debug(
+                "Browser context and browser closed successfully"
+            );
+
+        } catch (error) {
+
+            Logger.error(
+                "Failed to close browser context or browser"
+            );
+
+
+            throw new FrameworkError(
+                "Failed to close browser context or browser.",
+                { cause: error }
+            );
+        }
     }
-}
 }

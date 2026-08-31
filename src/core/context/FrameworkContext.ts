@@ -1,18 +1,25 @@
 import { Browser, BrowserContext, Page } from "@playwright/test";
 
+
 export class FrameworkContext {
 
-    private static browser?: Browser;
-    private static context?: BrowserContext;
-    private static page?: Page;
+    private browser: Browser | undefined;
 
-    static setBrowser(browser: Browser): void {
+    private context: BrowserContext | undefined;
+
+    private page: Page | undefined;
+
+
+    setBrowser(browser: Browser): void {
+
         this.browser = browser;
     }
 
-    static getBrowser(): Browser {
+
+    getBrowser(): Browser {
 
         if (!this.browser) {
+
             throw new Error(
                 "Browser has not been initialized"
             );
@@ -22,13 +29,16 @@ export class FrameworkContext {
     }
 
 
-    static setContext(context: BrowserContext): void {
+    setContext(context: BrowserContext): void {
+
         this.context = context;
     }
 
-    static getContext(): BrowserContext {
+
+    getContext(): BrowserContext {
 
         if (!this.context) {
+
             throw new Error(
                 "BrowserContext has not been initialized"
             );
@@ -37,13 +47,17 @@ export class FrameworkContext {
         return this.context;
     }
 
-    static setPage(page: Page): void {
+
+    setPage(page: Page): void {
+
         this.page = page;
     }
 
-   static getPage(): Page {
+
+    getPage(): Page {
 
         if (!this.page) {
+
             throw new Error(
                 "Page has not been initialized"
             );
@@ -52,4 +66,13 @@ export class FrameworkContext {
         return this.page;
     }
 
+
+    clear(): void {
+
+        this.browser = undefined;
+
+        this.context = undefined;
+
+        this.page = undefined;
+    }
 }

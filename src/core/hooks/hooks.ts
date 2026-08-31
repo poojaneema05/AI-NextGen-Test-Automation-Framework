@@ -1,20 +1,28 @@
 import {
-Before,
-After
+    Before,
+    After
 } from "@cucumber/cucumber";
 
-import { BaseTest } from "../base/BaseTest";
+import { DriverManager } from "@core/driver/DriverManager";
 
 
-Before(async()=>{
+let driverManager: DriverManager;
 
-    await BaseTest.setup();
+
+Before(async () => {
+
+    driverManager =
+        new DriverManager();
+
+    await driverManager.initialize();
+
+    await driverManager.createPage();
 
 });
 
 
-After(async()=>{
+After(async () => {
 
-    await BaseTest.teardown();
+    await driverManager.close();
 
 });

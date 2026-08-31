@@ -55,7 +55,6 @@ export class BrowserFactory {
 
 
                 case "chromium":
-                default:
 
                     Logger.debug("Launching Chromium browser");
 
@@ -63,6 +62,10 @@ export class BrowserFactory {
                         headless: config.headless
                     });
             }
+
+            throw new FrameworkError(
+                `Unsupported browser: ${browserType}`
+            );
 
         } catch (error) {
 

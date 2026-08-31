@@ -1,43 +1,31 @@
-import { test } from "@playwright/test";
-import { DriverManager } from "@core/driver/DriverManager";
-import { LoginPage } from "@pages/LoginPage";
+import { test } from "@fixtures/framework.fixture";
+
 import { TestDataManager } from "@common/testdata/TestDataManager";
 import { LoginData } from "@common/testdata/LoginData";
 
-test.describe("Login Tests", () => {
 
-    test.beforeEach(async () => {
+test.describe("Login Validation", () => {
 
-        await DriverManager.initialize();
+    test(
+        "valid login",
+        async ({ loginPage }) => {
 
-        await DriverManager.createPage();
+            const loginData =
+                TestDataManager.getData<LoginData>("loginData");
 
-    });
 
-    test.afterEach(async () => {
+            await loginPage.open();
 
-        await DriverManager.close();
 
-    });
+            await loginPage.login(
+                loginData.validUser.username,
+                loginData.validUser.password
+            );
 
-    test("valid login", async () => {
 
-    const page = DriverManager.getPage();
+            await loginPage.verifySuccessfulLogin();
 
-    const loginPage = new LoginPage(page);
-
-    const loginData =
-        TestDataManager.getData<LoginData>("loginData");
-
-    await loginPage.open();
-
-    await loginPage.login(
-        loginData.validUser.username,
-        loginData.validUser.password
+        }
     );
-
-    await loginPage.verifySuccessfulLogin();
-
-});
 
 });

@@ -1,3 +1,4 @@
+import { FrameworkError } from "@common/errors/FrameworkError";
 import { environments, EnvironmentConfig } from "./env.config";
 import { Logger } from "@logger/Logger";
 
@@ -23,7 +24,7 @@ export class ConfigManager {
                 `Environment '${env}' is not configured`
             );
 
-            throw new Error(
+            throw new FrameworkError(
                 `Environment '${env}' is not configured`
             );
         }

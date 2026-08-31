@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "playwright test"
-  },
+  "test": "playwright test"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",
