@@ -4,7 +4,9 @@ import {
 } from "@cucumber/cucumber";
 
 import { DriverManager } from "@core/driver/DriverManager";
+
 import { LoginPage } from "@pages/LoginPage";
+import { HomePage } from "@pages/HomePage";
 
 
 export class CustomWorld extends World {
@@ -12,6 +14,8 @@ export class CustomWorld extends World {
     public readonly driverManager: DriverManager;
 
     public loginPage!: LoginPage;
+
+    public homePage!: HomePage;
 
 
     constructor(options: IWorldOptions) {
@@ -25,9 +29,15 @@ export class CustomWorld extends World {
 
     initializePages(): void {
 
+        const page =
+            this.driverManager.getPage();
+
+
         this.loginPage =
-            new LoginPage(
-                this.driverManager.getPage()
-            );
+            new LoginPage(page);
+
+
+        this.homePage =
+            new HomePage(page);
     }
 }
