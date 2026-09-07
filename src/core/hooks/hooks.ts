@@ -17,7 +17,23 @@ Before(async function (this: CustomWorld) {
 });
 
 
-After(async function (this: CustomWorld) {
+After(async function (this: CustomWorld, scenario) {
+
+    if (scenario.result?.status === "FAILED") {
+
+        const page =
+            this.driverManager.getPage();
+
+        const screenshot =
+            await page.screenshot({
+                type: "png"
+            });
+
+        await this.attach(
+            screenshot,
+            "image/png"
+        );
+    }
 
     await this.driverManager.close();
 
