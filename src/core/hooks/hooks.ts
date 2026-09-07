@@ -3,26 +3,22 @@ import {
     After
 } from "@cucumber/cucumber";
 
-import { DriverManager } from "@core/driver/DriverManager";
+import { CustomWorld } from "../../cucumber/world/CustomWorld";
 
 
-let driverManager: DriverManager;
+Before(async function (this: CustomWorld) {
 
+    await this.driverManager.initialize();
 
-Before(async () => {
+    await this.driverManager.createPage();
 
-    driverManager =
-        new DriverManager();
-
-    await driverManager.initialize();
-
-    await driverManager.createPage();
+    this.initializePages();
 
 });
 
 
-After(async () => {
+After(async function (this: CustomWorld) {
 
-    await driverManager.close();
+    await this.driverManager.close();
 
 });

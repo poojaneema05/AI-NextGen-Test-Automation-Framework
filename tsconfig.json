@@ -19,7 +19,8 @@
       "@utils/*": ["src/common/utils/*"],
       "@logger/*": ["src/common/logger/*"],
       "@ai/*": ["src/ai/*"],
-      "@fixtures/*": ["src/fixtures/*"]
+      "@fixtures/*": ["src/fixtures/*"],
+      "@cucumber/*": ["src/cucumber/*"]
     },
 
     "resolveJsonModule": true,
