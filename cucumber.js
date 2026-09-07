@@ -15,7 +15,8 @@ module.exports = {
         ],
 
         format: [
-            "progress"
+            "progress",
+            "html:test-results/cucumber-report.html"
         ]
     }
 };
