@@ -10,14 +10,14 @@ export const environments: Record<string, EnvironmentConfig> = {
 
     qa: {
         baseUrl: "https://practicetestautomation.com",
-        apiUrl: "https://qa-api.example.com",
+        apiUrl: "https://restful-booker.herokuapp.com",
         browser: "chromium",
         headless: true
     },
 
     stage: {
         baseUrl: "https://practicetestautomation.com",
-        apiUrl: "https://stage-api.example.com",
+        apiUrl: "https://restful-booker.herokuapp.com",
         browser: "chromium",
         headless: true
     }
