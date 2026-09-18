@@ -1,60 +1,34 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "@fixtures/api.fixture";
 
-import { ApiClient } from "@core/api/ApiClient";
-import { BookingService } from "@core/api/services/BookingService";
-import { CreateBookingRequest } from "@core/api/models/CreateBookingRequest";
 import { CreateBookingResponse } from "@core/api/models/CreateBookingResponse";
+import { BookingTestData } from "@common/testdata/api/BookingTestData";
 
 
-test("Create a new booking", async () => {
+test("Create a new booking", async ({ bookingService }) => {
 
-    const apiClient =
-        await ApiClient.create();
+    const bookingRequest =
+        BookingTestData.validBooking();
 
-    const bookingService =
-        new BookingService(apiClient);
 
-    const bookingRequest: CreateBookingRequest = {
+    const response =
+        await bookingService.createBooking(
+            bookingRequest
+        );
 
-        firstname: "John",
 
-        lastname: "Doe",
+    const body: CreateBookingResponse =
+        response;
 
-        totalprice: 150,
 
-        depositpaid: true,
+    expect(body).toHaveProperty("bookingid");
 
-        bookingdates: {
-            checkin: "2026-09-10",
-            checkout: "2026-09-15"
-        },
+    expect(body).toHaveProperty("booking");
 
-        additionalneeds: "Breakfast"
-    };
 
-    try {
+    expect(body.booking.firstname)
+        .toBe(bookingRequest.firstname);
 
-        const response =
-            await bookingService.createBooking(
-                bookingRequest
-            );
 
-        const body: CreateBookingResponse =
-            response;
-
-        expect(body).toHaveProperty("bookingid");
-
-        expect(body).toHaveProperty("booking");
-
-        expect(body.booking.firstname)
-            .toBe(bookingRequest.firstname);
-
-        expect(body.booking.lastname)
-            .toBe(bookingRequest.lastname);
-
-    } finally {
-
-        await apiClient.close();
-
-    }
+    expect(body.booking.lastname)
+        .toBe(bookingRequest.lastname);
 });

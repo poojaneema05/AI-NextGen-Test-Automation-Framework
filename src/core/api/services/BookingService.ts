@@ -1,6 +1,9 @@
+import { APIResponse } from "@playwright/test";
+
+import { ApiBase } from "@core/api/ApiBase";
 import { CreateBookingRequest } from "@core/api/models/CreateBookingRequest";
 import { CreateBookingResponse } from "@core/api/models/CreateBookingResponse";
-import { APIResponse } from "@playwright/test";
+import { UpdateBookingRequest } from "@core/api/models/UpdateBookingRequest";
 import { ApiClient } from "@core/api/ApiClient";
 
 
@@ -11,13 +14,16 @@ import { ApiClient } from "@core/api/ApiClient";
  * - Booking-specific API endpoints
  * - Business-level API operations
  *
+ * Common API functionality is provided by ApiBase.
  * HTTP mechanics remain inside ApiClient.
  */
-export class BookingService {
+export class BookingService extends ApiBase {
 
-    constructor(
-        private readonly apiClient: ApiClient
-    ) {}
+
+    constructor(apiClient: ApiClient) {
+
+        super(apiClient);
+    }
 
 
     /**
@@ -32,18 +38,34 @@ export class BookingService {
         );
     }
 
-//Creates a new booking.
 
-async createBooking(
-    request: CreateBookingRequest
-): Promise<CreateBookingResponse> {
+    /**
+     * Creates a new booking.
+     */
+    async createBooking(
+        request: CreateBookingRequest
+    ): Promise<CreateBookingResponse> {
 
-    const response =
-        await this.apiClient.post(
-            "/booking",
+        const response =
+            await this.apiClient.post(
+                "/booking",
+                request
+            );
+
+        return await response.json() as CreateBookingResponse;
+    }
+
+     /**
+     * Updates an existing booking.
+     */
+    async updateBooking(
+        bookingId: number,
+        request: UpdateBookingRequest
+    ): Promise<APIResponse> {
+
+        return await this.apiClient.put(
+            `/booking/${bookingId}`,
             request
         );
-
-    return await response.json() as CreateBookingResponse;
-}
+    }
 }
