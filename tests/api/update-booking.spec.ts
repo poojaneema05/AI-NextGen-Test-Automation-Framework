@@ -18,9 +18,6 @@ test("Update an existing booking", async ({ bookingService }) => {
         );
 
 
-        console.log("STATUS:", response.status());
-        console.log("BODY:", await response.text());
-
         expect(response.status()).toBe(200);
 
 
