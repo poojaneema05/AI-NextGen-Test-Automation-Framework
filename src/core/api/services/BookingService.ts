@@ -68,4 +68,16 @@ export class BookingService extends ApiBase {
             request
         );
     }
+
+    /**
+     * Deletes an existing booking.
+     */
+    async deleteBooking(
+        bookingId: number
+    ): Promise<APIResponse> {
+
+        return await this.apiClient.delete(
+            `/booking/${bookingId}`
+        );
+    }
 }

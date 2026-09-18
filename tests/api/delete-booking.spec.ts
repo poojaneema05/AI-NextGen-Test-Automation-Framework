@@ -3,7 +3,7 @@ import { test, expect } from "@fixtures/api.fixture";
 import { BookingTestData } from "@common/testdata/api/BookingTestData";
 
 
-test("Get booking by ID", async ({ bookingService }) => {
+test("Delete an existing booking", async ({ bookingService }) => {
 
     const bookingRequest =
         BookingTestData.validBooking();
@@ -22,23 +22,20 @@ test("Get booking by ID", async ({ bookingService }) => {
     expect(bookingId).toBeTruthy();
 
 
-    const response =
+    const deleteResponse =
+        await bookingService.deleteBooking(
+            bookingId
+        );
+
+
+    expect(deleteResponse.status()).toBe(201);
+
+
+    const getResponse =
         await bookingService.getBooking(
             bookingId
         );
 
 
-    expect(response.status()).toBe(200);
-
-
-    const body =
-        await response.json();
-
-
-    expect(body.firstname)
-        .toBe(bookingRequest.firstname);
-
-
-    expect(body.lastname)
-        .toBe(bookingRequest.lastname);
+    expect(getResponse.status()).toBe(404);
 });
