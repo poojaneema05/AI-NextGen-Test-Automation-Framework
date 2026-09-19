@@ -1,4 +1,5 @@
 import { test, expect } from "@fixtures/api.fixture";
+import { ApiAssertions } from "@core/api/ApiAssertions";
 
 
 test("Verify Restful Booker API is available", async ({ apiClient }) => {
@@ -8,5 +9,8 @@ test("Verify Restful Booker API is available", async ({ apiClient }) => {
 
     expect(response.ok()).toBeTruthy();
 
-    expect(response.status()).toBe(201);
+    await ApiAssertions.expectStatus(
+    response,
+    201
+);
 });

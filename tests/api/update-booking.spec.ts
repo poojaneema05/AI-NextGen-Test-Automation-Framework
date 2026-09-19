@@ -1,5 +1,5 @@
 import { test, expect } from "@fixtures/api.fixture";
-
+import { ApiAssertions } from "@core/api/ApiAssertions";
 import { BookingTestData } from "@common/testdata/api/BookingTestData";
 
 
@@ -16,7 +16,7 @@ test("Update an existing booking", async ({ bookingService }) => {
 
 
     const bookingId =
-        createResponse.bookingid;
+        createResponse.body.bookingid;
 
 
     expect(bookingId).toBeTruthy();
@@ -33,7 +33,10 @@ test("Update an existing booking", async ({ bookingService }) => {
         );
 
 
-    expect(updateResponse.status()).toBe(200);
+    await ApiAssertions.expectStatus(
+    updateResponse,
+    200
+    );
 
 
     const updateBody =
@@ -62,7 +65,10 @@ test("Update an existing booking", async ({ bookingService }) => {
         );
 
 
-    expect(getResponse.status()).toBe(200);
+    await ApiAssertions.expectStatus(
+    updateResponse,
+    200
+    );
 
 
     const getBody =

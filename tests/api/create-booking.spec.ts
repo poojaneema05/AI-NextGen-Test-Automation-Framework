@@ -1,5 +1,5 @@
 import { test, expect } from "@fixtures/api.fixture";
-
+import { ApiAssertions } from "@core/api/ApiAssertions";
 import { CreateBookingResponse } from "@core/api/models/CreateBookingResponse";
 import { BookingTestData } from "@common/testdata/api/BookingTestData";
 
@@ -10,14 +10,18 @@ test("Create a new booking", async ({ bookingService }) => {
         BookingTestData.validBooking();
 
 
-    const response =
-        await bookingService.createBooking(
-            bookingRequest
-        );
+    const result =
+    await bookingService.createBooking(
+        bookingRequest
+    );
 
+    await ApiAssertions.expectStatus(
+    result.response,
+    200
+    );
 
     const body: CreateBookingResponse =
-        response;
+    result.body;
 
 
     expect(body).toHaveProperty("bookingid");

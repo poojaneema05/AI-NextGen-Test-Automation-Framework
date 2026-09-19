@@ -1,5 +1,5 @@
 import { APIResponse } from "@playwright/test";
-
+import { ApiResponse } from "@core/api/models/ApiResponse";
 import { ApiBase } from "@core/api/ApiBase";
 import { CreateBookingRequest } from "@core/api/models/CreateBookingRequest";
 import { CreateBookingResponse } from "@core/api/models/CreateBookingResponse";
@@ -44,7 +44,7 @@ export class BookingService extends ApiBase {
      */
     async createBooking(
         request: CreateBookingRequest
-    ): Promise<CreateBookingResponse> {
+    ): Promise<ApiResponse<CreateBookingResponse>> {
 
         const response =
             await this.apiClient.post(
@@ -52,7 +52,10 @@ export class BookingService extends ApiBase {
                 request
             );
 
-        return await response.json() as CreateBookingResponse;
+        return {
+    response,
+    body: await response.json() as CreateBookingResponse
+};
     }
 
      /**

@@ -1,5 +1,5 @@
 import { test, expect } from "@fixtures/api.fixture";
-
+import { ApiAssertions } from "@core/api/ApiAssertions";
 import { BookingTestData } from "@common/testdata/api/BookingTestData";
 
 
@@ -16,7 +16,7 @@ test("Delete an existing booking", async ({ bookingService }) => {
 
 
     const bookingId =
-        createResponse.bookingid;
+        createResponse.body.bookingid;
 
 
     expect(bookingId).toBeTruthy();
@@ -28,7 +28,10 @@ test("Delete an existing booking", async ({ bookingService }) => {
         );
 
 
-    expect(deleteResponse.status()).toBe(201);
+    await ApiAssertions.expectStatus(
+    deleteResponse,
+    201
+    );
 
 
     const getResponse =
@@ -37,5 +40,8 @@ test("Delete an existing booking", async ({ bookingService }) => {
         );
 
 
-    expect(getResponse.status()).toBe(404);
+    await ApiAssertions.expectStatus(
+    getResponse,
+    404
+    );
 });
