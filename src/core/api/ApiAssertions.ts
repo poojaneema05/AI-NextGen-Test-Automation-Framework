@@ -71,4 +71,32 @@ export class ApiAssertions {
             );
         }
     }
+
+    /**
+ * Validates that an API operation failed with the expected HTTP status.
+ *
+ * Useful for negative testing where an error response is an expected
+ * outcome rather than a test failure.
+ */
+static async expectErrorStatus(
+    response: APIResponse,
+    expectedStatus: number
+): Promise<void> {
+
+    const actualStatus =
+        response.status();
+
+
+    Logger.info(
+        `Validating API error status: expected ${expectedStatus}, actual ${actualStatus}`
+    );
+
+
+    if (actualStatus !== expectedStatus) {
+
+        throw new FrameworkError(
+            `API error validation failed. Expected ${expectedStatus}, but received ${actualStatus}.`
+        );
+    }
+}
 }

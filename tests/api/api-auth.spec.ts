@@ -24,3 +24,20 @@ test("Authenticate with Restful Booker API", async () => {
 
     expect(typeof token).toBe("string");
 });
+
+test("Reject invalid API credentials", async () => {
+
+    const invalidCredentials: ApiAuthRequest = {
+
+        username: "invalid-user",
+
+        password: "invalid-password"
+    };
+
+
+    await expect(
+        ApiAuth.authenticate(
+            invalidCredentials
+        )
+    ).rejects.rejects.toThrow();
+});
