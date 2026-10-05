@@ -20,7 +20,8 @@
       "@logger/*": ["src/common/logger/*"],
       "@ai/*": ["src/ai/*"],
       "@fixtures/*": ["src/fixtures/*"],
-      "@cucumber/*": ["src/cucumber/*"]
+      "@cucumber/*": ["src/cucumber/*"],
+      "@mobile/*": ["src/mobile/*"]
     },
 
     "resolveJsonModule": true,
