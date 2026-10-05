@@ -54,3 +54,53 @@ The guiding principle is:
       │ Components    │       │ API Fixtures  │       │ BaseScreen     │
       └───────┬───────┘
 ```
+---
+
+# 🤖 AI Engineering Foundation
+
+The framework includes a provider-agnostic AI architecture designed to
+bring intelligent analysis capabilities into the Quality Engineering
+lifecycle without coupling the framework to a specific AI vendor.
+
+The current AI foundation focuses on **AI-powered test failure analysis**.
+
+## AI Architecture
+
+```text
+                    Test Failure
+                         │
+                         ▼
+              FailureAnalysisRequest
+                         │
+                         ▼
+               FailureAnalysisPrompt
+                         │
+                         ▼
+                  FailureAnalyzer
+                         │
+                         ▼
+                    AIProvider
+                 ┌───────┴────────┐
+                 │                │
+                 ▼                ▼
+          MockAIProvider      Future Providers
+                              ├─ AWS Bedrock
+                              ├─ OpenAI
+                              ├─ Azure OpenAI
+                              └─ Internal LLM
+                 │
+                 ▼
+              AI Response
+                 │
+                 ▼
+             JSON Parsing
+                 │
+                 ▼
+           Zod Validation
+                 │
+          ┌──────┴──────┐
+          │             │
+        Valid         Invalid
+          │             │
+          ▼             ▼
+ FailureAnalysisResult  FrameworkError
