@@ -39,5 +39,5 @@ test("Reject invalid API credentials", async () => {
         ApiAuth.authenticate(
             invalidCredentials
         )
-    ).rejects.rejects.toThrow();
+    ).rejects.toThrow();
 });
